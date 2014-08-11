@@ -23,7 +23,7 @@
       <xsd:element name="Countries" minOccurs="1" maxOccurs="1">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="Country" nillable="false" type="refData:countryType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="Country" nillable="false" type="refData:countryType" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
