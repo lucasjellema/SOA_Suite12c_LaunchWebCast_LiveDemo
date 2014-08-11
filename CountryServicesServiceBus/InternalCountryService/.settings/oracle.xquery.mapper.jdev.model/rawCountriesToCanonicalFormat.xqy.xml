@@ -1,0 +1,6 @@
+<view_states>
+   <function arity="1" name="func">
+      <source_tree_view last.visible.row="7" last.visible.path="/sourceRoot[[0]]/Countries[[0]]/Country[[0]]/keywords[[5]]" expanded.paths="/sourceRoot[[0]]/Countries[[0]]&#xA;/sourceRoot[[0]]/Countries[[0]]/Country[[0]]" selected.paths="/sourceRoot[[0]]/Countries[[0]]/Country[[0]]/wikipediaLink[[4]]" first.visible.path="/sourceRoot[[0]]/Countries[[0]]" first.visible.row="0"/>
+      <target_tree_view last.visible.row="8" last.visible.path="/TargetRoot[[0]]/getAllCountriesResponseMessage[[0]]/Countries[[0]]/Country[[0]]/wikipediaReference[[5]]" expanded.paths="/TargetRoot[[0]]/getAllCountriesResponseMessage[[0]]&#xA;/TargetRoot[[0]]/getAllCountriesResponseMessage[[0]]/Countries[[0]]&#xA;/TargetRoot[[0]]/getAllCountriesResponseMessage[[0]]/Countries[[0]]/Country[[0]]" selected.paths="/TargetRoot[[0]]/getAllCountriesResponseMessage[[0]]/Countries[[0]]/Country[[0]]/wikipediaReference[[5]]" first.visible.path="/TargetRoot[[0]]/getAllCountriesResponseMessage[[0]]" first.visible.row="0"/>
+   </function>
+</view_states>
