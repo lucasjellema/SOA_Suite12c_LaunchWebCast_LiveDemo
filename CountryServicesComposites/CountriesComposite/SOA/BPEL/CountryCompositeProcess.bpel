@@ -1,0 +1,85 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Aug 11 17:55:00 CEST 2014
+  Author:  oracle
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CountryCompositeProcess"
+               targetNamespace="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/CountryCompositeProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/CountryCompositeProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="saibot.airport/services/utility/reference"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/PirvateCountryRestReference">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="saibot.airport/services/utility/reference" location="../WSDLs/CountryServiceWrapper1.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="countrycompositeprocess_client" partnerLinkType="ns1:CountryCompositeProcess" myRole="CountryServicePortType"/>
+    <partnerLink name="PrivateCountryRestReference" partnerLinkType="ns2:PirvateCountryRestReference"
+                 partnerRole="PirvateCountryRestReferenceProvider"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:findCountriesRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:findCountriesResponseMessage"/>
+    <variable name="InvokeInternalCountryService_getAllCountries_OutputVariable"
+              messageType="ns2:getAllCountries_outputMessage"/>
+    <variable name="InvokeInternalCountryService_getAllCountries_InputVariable" messageType="ns2:Rest_EmptyMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in CountryCompositeProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="countrycompositeprocess_client" portType="ns1:CountryServicePortType" operation="findCountries" variable="inputVariable" createInstance="yes"/>
+    <invoke name="InvokeInternalCountryService" partnerLink="PrivateCountryRestReference"
+            portType="ns2:PirvateCountryRestReference_ptt" operation="getAllCountries"
+            outputVariable="InvokeInternalCountryService_getAllCountries_OutputVariable" bpelx:invokeAsDetail="no"
+            inputVariable="InvokeInternalCountryService_getAllCountries_InputVariable"/>
+    <assign name="FilterAndTransformRawCountries">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+      </bpelx:annotation>
+      <copy>
+        <from>ora:doXSLTransformForDoc("../Transformations/RawCountriesToFilteredRefinedCountries.xsl", $InvokeInternalCountryService_getAllCountries_OutputVariable.reply,"countryCode",$inputVariable.in/ns1:code,"countryName",$inputVariable.in/ns1:name, "continent",$inputVariable.in/ns1:continent)</from>
+        <to variable="outputVariable" part="return"/>
+      </copy>
+    </assign>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="countrycompositeprocess_client" portType="ns1:CountryServicePortType" operation="findCountries" variable="outputVariable"/>
+  </sequence>
+</process>

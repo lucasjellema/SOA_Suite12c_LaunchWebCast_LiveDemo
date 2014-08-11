@@ -1,0 +1,107 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Aug 11 18:50:41 CEST 2014
+  Author:  oracle
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="HelloWorld"
+               targetNamespace="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/HelloWorld"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/HelloWorld"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:ui="http://xmlns.oracle.com/soa/designer"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:sp1="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/SubprocessLogTimestampedMessage"
+         xmlns:ns1="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/LoggingAssistant">
+
+    <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/HelloWorld" location="../WSDLs/HelloWorld.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="helloworld_client" partnerLinkType="client:HelloWorld" myRole="HelloWorldProvider"/>
+    <partnerLink name="LoggingAssistant.loggingassistant_client" partnerLinkType="ns1:LoggingAssistant"
+                 partnerRole="LoggingAssistantProvider"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:HelloWorldRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:HelloWorldResponseMessage"/>
+    <variable name="InvokeLoggingAssistant_process_InputVariable" messageType="ns1:LoggingAssistantRequestMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in HelloWorld.wsdl) -->
+    <receive name="receiveInput" partnerLink="helloworld_client" portType="client:HelloWorld" operation="process" variable="inputVariable" createInstance="yes"/>
+    <assign name="SetOutput">
+      <copy>
+        <from>concat("Hello", $inputVariable.payload/client:input)</from>
+        <to>$outputVariable.payload/client:result</to>
+      </copy>
+    </assign>
+    <extensionActivity>
+      <bpelx:call name="CallLogFileWriter"
+                  xmlns:sp1="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/SubprocessLogTimestampedMessage"
+                  target="sp1:SubprocessLogTimestampedMessage">
+        <bpelx:param name="LogMessage" copyByValue="yes">$inputVariable.payload/client:input</bpelx:param>
+        <bpelx:param name="LoggingSourceComponent" copyByValue="yes">"HelloWorld BPEL in SOACompositeTemplate SOA Composite"</bpelx:param>
+      </bpelx:call>
+    </extensionActivity>
+    <assign name="AssignLoggingAssistantInput">
+      <copy>
+        <from>concat("Call with input : ", $inputVariable.payload/client:input)</from>
+        <to>$InvokeLoggingAssistant_process_InputVariable.payload/ns1:logMessage</to>
+      </copy>
+      <copy>
+        <from>'BPEL Component HelloWorld in SOA Composite SOACompositeTemplates'</from>
+        <to>$InvokeLoggingAssistant_process_InputVariable.payload/ns1:logSource</to>
+      </copy>
+    </assign>
+    <invoke name="InvokeLoggingAssistant" bpelx:invokeAsDetail="no"
+            partnerLink="LoggingAssistant.loggingassistant_client" portType="ns1:LoggingAssistant" operation="process"
+            inputVariable="InvokeLoggingAssistant_process_InputVariable"/>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="helloworld_client" portType="client:HelloWorld" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>
