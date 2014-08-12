@@ -28,7 +28,8 @@
          xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
          xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
          xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
-         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns3="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/LoggingAssistant">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +48,8 @@
     <partnerLink name="countrycompositeprocess_client" partnerLinkType="ns1:CountryCompositeProcess" myRole="CountryServicePortType"/>
     <partnerLink name="PrivateCountryRestReference" partnerLinkType="ns2:PirvateCountryRestReference"
                  partnerRole="PirvateCountryRestReferenceProvider"/>
+    <partnerLink name="LoggingAssistant.loggingassistant_client" partnerLinkType="ns3:LoggingAssistant"
+                 partnerRole="LoggingAssistantProvider"/>
   </partnerLinks>
 
   <!-- 
@@ -67,6 +70,7 @@
     <variable name="countryName" type="xsd:string"/>
     <variable name="countryCode" type="xsd:string"/>
     <variable name="continent" type="xsd:string"/>
+    <variable name="InvokeLoggingAssistant_process_InputVariable" messageType="ns3:LoggingAssistantRequestMessage"/>
   </variables>
 
   <!-- 
@@ -109,6 +113,19 @@
         <to variable="outputVariable" part="return"/>
       </copy>
     </assign>
+    <assign name="Assign1">
+      <copy>
+        <from>concat(' hello from countries service for input country name ', $countryName,' continent ', $continent)</from>
+        <to>$InvokeLoggingAssistant_process_InputVariable.payload/ns3:logMessage</to>
+      </copy>
+      <copy>
+        <from>' BPEL component CountryCompositeProcess' </from>
+        <to>$InvokeLoggingAssistant_process_InputVariable.payload/ns3:logSource</to>
+      </copy>
+    </assign>
+    <invoke name="InvokeLoggingAssistant" bpelx:invokeAsDetail="no"
+            partnerLink="LoggingAssistant.loggingassistant_client" portType="ns3:LoggingAssistant" operation="process"
+            inputVariable="InvokeLoggingAssistant_process_InputVariable"/>
     <!-- Generate reply to synchronous request -->
     <reply name="replyOutput" partnerLink="countrycompositeprocess_client" portType="ns1:CountryServicePortType" operation="findCountries" variable="outputVariable"/>
   </sequence>
