@@ -15,11 +15,11 @@
         </dgm:operations>
     </dgm:gService>
     <dgm:gReference name="logFileWriter">
-        <dgm:body borderWidth="2" arcRad="20" X="1060" Y="70" width="136" height="84">
+        <dgm:body borderWidth="2" arcRad="20" X="1048" Y="70" width="136" height="84">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="1050" Y="63" width="156" height="98">
+        <dgm:shadow arcRad="20" X="1038" Y="63" width="156" height="98">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="logFileWriter" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesComposites/SOACompositeTemplates/logFileWriter#wsdl.interface(WriteLogEntry_ptt)"/>
@@ -29,12 +29,12 @@
         </dgm:operations>
     </dgm:gReference>
     <dgm:gComponent name="HelloWorld">
-        <dgm:body borderWidth="2" arcRad="20" X="286" Y="42" width="130" height="86">
+        <dgm:body borderWidth="2" arcRad="20" X="283" Y="42" width="130" height="86">
             <dgm:borderColor r="69" g="113" b="140"/>
             <dgm:lightBgColor r="166" g="208" b="230"/>
             <dgm:darkBgColor r="99" g="162" b="201"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="276" Y="35" width="150" height="102">
+        <dgm:shadow arcRad="20" X="273" Y="35" width="150" height="102">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="helloworld_client" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/HelloWorld#wsdl.interface(HelloWorld)"/>
@@ -43,12 +43,12 @@
         <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/shared/plugins/resources/images/soa/process_20x20.png" X="10" Y="4" width="20" height="20"/>
     </dgm:gComponent>
     <dgm:gComponent name="SubprocessLogTimestampedMessage">
-        <dgm:body borderWidth="2" arcRad="20" X="802" Y="55" width="130" height="61">
+        <dgm:body borderWidth="2" arcRad="20" X="793" Y="55" width="130" height="61">
             <dgm:borderColor r="141" g="141" b="141"/>
             <dgm:lightBgColor r="255" g="255" b="255"/>
             <dgm:darkBgColor r="202" g="202" b="202"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="792" Y="48" width="150" height="77">
+        <dgm:shadow arcRad="20" X="783" Y="48" width="150" height="77">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="SubprocessLogTimestampedMessage" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png"/>
@@ -56,12 +56,12 @@
         <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/v2/plugins/resources/images/application/scaconfig/subprocess_20x20.png" X="10" Y="4" width="20" height="20"/>
     </dgm:gComponent>
     <dgm:gComponent name="LoggingAssistant">
-        <dgm:body borderWidth="2" arcRad="20" X="544" Y="26" width="130" height="61">
+        <dgm:body borderWidth="2" arcRad="20" X="538" Y="26" width="130" height="61">
             <dgm:borderColor r="69" g="113" b="140"/>
             <dgm:lightBgColor r="166" g="208" b="230"/>
             <dgm:darkBgColor r="99" g="162" b="201"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="534" Y="19" width="150" height="77">
+        <dgm:shadow arcRad="20" X="528" Y="19" width="150" height="77">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="loggingassistant_client" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/LoggingAssistant#wsdl.interface(LoggingAssistant)"/>
@@ -69,35 +69,35 @@
         <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/shared/plugins/resources/images/soa/process_20x20.png" X="10" Y="4" width="20" height="20"/>
     </dgm:gComponent>
     <dgm:gWireLink source="helloworld_client_ep" target="HelloWorld/helloworld_client" width="2">
-        <dgm:gSegment X1="168" Y1="67" X2="276" Y2="67"/>
+        <dgm:gSegment X1="168" Y1="67" X2="273" Y2="67"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="SubprocessLogTimestampedMessage/logFileWriter" target="logFileWriter" width="2">
-        <dgm:gSegment X1="942" Y1="80" X2="1050" Y2="80"/>
+        <dgm:gSegment X1="933" Y1="80" X2="1038" Y2="80"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="HelloWorld/LoggingAssistant.loggingassistant_client" target="LoggingAssistant/loggingassistant_client" width="2">
-        <dgm:gSegment X1="426" Y1="67" X2="450" Y2="67"/>
-        <dgm:gSegment X1="450" Y1="67" X2="450" Y2="51"/>
-        <dgm:gSegment X1="450" Y1="51" X2="534" Y2="51"/>
+        <dgm:gSegment X1="423" Y1="67" X2="447" Y2="67"/>
+        <dgm:gSegment X1="447" Y1="67" X2="447" Y2="51"/>
+        <dgm:gSegment X1="447" Y1="51" X2="528" Y2="51"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="HelloWorld/SubprocessLogTimestampedMessage" target="SubprocessLogTimestampedMessage/SubprocessLogTimestampedMessage" width="2">
-        <dgm:gSegment X1="426" Y1="92" X2="450" Y2="92"/>
-        <dgm:gSegment X1="450" Y1="92" X2="450" Y2="115"/>
-        <dgm:gSegment X1="450" Y1="115" X2="708" Y2="115"/>
-        <dgm:gSegment X1="708" Y1="115" X2="708" Y2="80"/>
-        <dgm:gSegment X1="708" Y1="80" X2="792" Y2="80"/>
+        <dgm:gSegment X1="423" Y1="92" X2="447" Y2="92"/>
+        <dgm:gSegment X1="447" Y1="92" X2="447" Y2="115"/>
+        <dgm:gSegment X1="447" Y1="115" X2="702" Y2="115"/>
+        <dgm:gSegment X1="702" Y1="115" X2="702" Y2="80"/>
+        <dgm:gSegment X1="702" Y1="80" X2="783" Y2="80"/>
         <dgm:baseColor r="183" g="183" b="183"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="LoggingAssistant/SubprocessLogTimestampedMessage" target="SubprocessLogTimestampedMessage/SubprocessLogTimestampedMessage" width="2">
-        <dgm:gSegment X1="684" Y1="51" X2="723" Y2="51"/>
-        <dgm:gSegment X1="723" Y1="51" X2="723" Y2="80"/>
-        <dgm:gSegment X1="723" Y1="80" X2="792" Y2="80"/>
+        <dgm:gSegment X1="678" Y1="51" X2="717" Y2="51"/>
+        <dgm:gSegment X1="717" Y1="51" X2="717" Y2="80"/>
+        <dgm:gSegment X1="717" Y1="80" X2="783" Y2="80"/>
         <dgm:baseColor r="183" g="183" b="183"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dgm:gDiagram xmlns:dgm="http://xmlns.oracle.com/sca/soadgm">
     <dgm:gService name="countrycompositeprocess_client_ep">
-        <dgm:body borderWidth="2" arcRad="20" X="21" Y="41" width="137" height="84">
+        <dgm:body borderWidth="2" arcRad="20" X="21" Y="142" width="137" height="84">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="11" Y="34" width="156" height="98">
+        <dgm:shadow arcRad="20" X="11" Y="135" width="156" height="98">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:outputPort name="countrycompositeprocess_client_ep" X="127" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="saibot.airport/services/utility/reference#wsdl.interface(CountryServicePortType)"/>
@@ -15,11 +15,11 @@
         </dgm:operations>
     </dgm:gService>
     <dgm:gReference name="PrivateCountryRestReference">
-        <dgm:body borderWidth="2" arcRad="20" X="878" Y="41" width="136" height="84">
+        <dgm:body borderWidth="2" arcRad="20" X="985" Y="26" width="136" height="84">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="868" Y="34" width="156" height="98">
+        <dgm:shadow arcRad="20" X="975" Y="19" width="156" height="98">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="PrivateCountryRestReference" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/PirvateCountryRestReference#wsdl.interface(PirvateCountryRestReference_ptt)"/>
@@ -28,27 +28,54 @@
             <dgm:item>getAllCountries</dgm:item>
         </dgm:operations>
     </dgm:gReference>
-    <dgm:gComponent name="CountryCompositeProcess">
-        <dgm:body borderWidth="2" arcRad="20" X="453" Y="26" width="130" height="61">
+    <dgm:gReference name="logFileWriter">
+        <dgm:body borderWidth="2" arcRad="20" X="985" Y="142" width="136" height="84">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="975" Y="135" width="156" height="98">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="logFileWriter" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesComposites/SOACompositeTemplates/logFileWriter#wsdl.interface(WriteLogEntry_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/file_adapter_20x20.png" X="27" Y="4" width="20" height="20"/>
+        <dgm:operations>
+            <dgm:item>WriteLogEntry</dgm:item>
+        </dgm:operations>
+    </dgm:gReference>
+    <dgm:gComponent name="LoggingAssistant">
+        <dgm:body borderWidth="2" arcRad="20" X="347" Y="127" width="130" height="61">
             <dgm:borderColor r="69" g="113" b="140"/>
             <dgm:lightBgColor r="166" g="208" b="230"/>
             <dgm:darkBgColor r="99" g="162" b="201"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="443" Y="19" width="150" height="77">
+        <dgm:shadow arcRad="20" X="337" Y="120" width="150" height="77">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
-        <dgm:inputPort name="countrycompositeprocess_client" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="saibot.airport/services/utility/reference#wsdl.interface(CountryServicePortType)"/>
-        <dgm:outputPort name="PrivateCountryRestReference" X="120" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/PirvateCountryRestReference#wsdl.interface(PirvateCountryRestReference_ptt)"/>
+        <dgm:inputPort name="loggingassistant_client" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/LoggingAssistant#wsdl.interface(LoggingAssistant)"/>
+        <dgm:outputPort name="SubprocessLogTimestampedMessage" X="120" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png"/>
         <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/shared/plugins/resources/images/soa/process_20x20.png" X="10" Y="4" width="20" height="20"/>
     </dgm:gComponent>
-    <dgm:gWireLink source="countrycompositeprocess_client_ep" target="CountryCompositeProcess/countrycompositeprocess_client" width="2">
-        <dgm:gSegment X1="168" Y1="51" X2="443" Y2="51"/>
+    <dgm:gComponent name="SubprocessLogTimestampedMessage">
+        <dgm:body borderWidth="2" arcRad="20" X="666" Y="127" width="130" height="61">
+            <dgm:borderColor r="141" g="141" b="141"/>
+            <dgm:lightBgColor r="255" g="255" b="255"/>
+            <dgm:darkBgColor r="202" g="202" b="202"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="656" Y="120" width="150" height="77">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="SubprocessLogTimestampedMessage" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png"/>
+        <dgm:outputPort name="logFileWriter" X="120" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/pcbpel/adapter/file/CountryServicesComposites/SOACompositeTemplates/logFileWriter#wsdl.interface(WriteLogEntry_ptt)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/v2/plugins/resources/images/application/scaconfig/subprocess_20x20.png" X="10" Y="4" width="20" height="20"/>
+    </dgm:gComponent>
+    <dgm:gWireLink source="SubprocessLogTimestampedMessage/logFileWriter" target="logFileWriter" width="2">
+        <dgm:gSegment X1="806" Y1="152" X2="975" Y2="152"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
-    <dgm:gWireLink source="CountryCompositeProcess/PrivateCountryRestReference" target="PrivateCountryRestReference" width="2">
-        <dgm:gSegment X1="593" Y1="51" X2="868" Y2="51"/>
-        <dgm:baseColor r="153" g="153" b="153"/>
+    <dgm:gWireLink source="LoggingAssistant/SubprocessLogTimestampedMessage" target="SubprocessLogTimestampedMessage/SubprocessLogTimestampedMessage" width="2">
+        <dgm:gSegment X1="487" Y1="152" X2="656" Y2="152"/>
+        <dgm:baseColor r="183" g="183" b="183"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
 </dgm:gDiagram>
