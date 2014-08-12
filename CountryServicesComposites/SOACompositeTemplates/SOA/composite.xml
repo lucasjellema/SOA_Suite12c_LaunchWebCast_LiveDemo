@@ -32,7 +32,6 @@
       <reference name="LoggingAssistant.loggingassistant_client" ui:wsdlLocation="WSDLs/LoggingAssistant.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/LoggingAssistant#wsdl.interface(LoggingAssistant)"/>
       </reference>
-      <sca-ext:callReference name="SubprocessLogTimestampedMessage"/>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
   </component>
@@ -72,10 +71,6 @@
     <source.uri>HelloWorld/LoggingAssistant.loggingassistant_client</source.uri>
     <target.uri>LoggingAssistant/loggingassistant_client</target.uri>
   </wire>
-  <sca-ext:callWire>
-    <sca-ext:source>HelloWorld/SubprocessLogTimestampedMessage</sca-ext:source>
-    <sca-ext:target>SubprocessLogTimestampedMessage/SubprocessLogTimestampedMessage</sca-ext:target>
-  </sca-ext:callWire>
   <sca-ext:callWire>
     <sca-ext:source>LoggingAssistant/SubprocessLogTimestampedMessage</sca-ext:source>
     <sca-ext:target>SubprocessLogTimestampedMessage/SubprocessLogTimestampedMessage</sca-ext:target>

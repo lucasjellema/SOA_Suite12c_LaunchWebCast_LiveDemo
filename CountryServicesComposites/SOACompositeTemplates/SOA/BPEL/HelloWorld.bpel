@@ -80,14 +80,6 @@
         <to>$outputVariable.payload/client:result</to>
       </copy>
     </assign>
-    <extensionActivity>
-      <bpelx:call name="CallLogFileWriter"
-                  xmlns:sp1="http://xmlns.oracle.com/CountryServicesComposites/SOACompositeTemplates/SubprocessLogTimestampedMessage"
-                  target="sp1:SubprocessLogTimestampedMessage">
-        <bpelx:param name="LogMessage" copyByValue="yes">$inputVariable.payload/client:input</bpelx:param>
-        <bpelx:param name="LoggingSourceComponent" copyByValue="yes">"HelloWorld BPEL in SOACompositeTemplate SOA Composite"</bpelx:param>
-      </bpelx:call>
-    </extensionActivity>
     <assign name="AssignLoggingAssistantInput">
       <copy>
         <from>concat("Call with input : ", $inputVariable.payload/client:input)</from>
