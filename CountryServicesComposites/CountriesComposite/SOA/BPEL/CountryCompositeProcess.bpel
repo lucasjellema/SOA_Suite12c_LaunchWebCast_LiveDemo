@@ -17,7 +17,18 @@
                xmlns:ns1="saibot.airport/services/utility/reference"
                xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
          xmlns:ui="http://xmlns.oracle.com/soa/designer"
-         xmlns:ns2="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/PirvateCountryRestReference">
+         xmlns:ns2="http://xmlns.oracle.com/CountryServicesComposites/CountriesComposite/PirvateCountryRestReference"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +64,9 @@
     <variable name="InvokeInternalCountryService_getAllCountries_OutputVariable"
               messageType="ns2:getAllCountries_outputMessage"/>
     <variable name="InvokeInternalCountryService_getAllCountries_InputVariable" messageType="ns2:Rest_EmptyMessage"/>
+    <variable name="countryName" type="xsd:string"/>
+    <variable name="countryCode" type="xsd:string"/>
+    <variable name="continent" type="xsd:string"/>
   </variables>
 
   <!-- 
@@ -70,12 +84,28 @@
             portType="ns2:PirvateCountryRestReference_ptt" operation="getAllCountries"
             outputVariable="InvokeInternalCountryService_getAllCountries_OutputVariable" bpelx:invokeAsDetail="no"
             inputVariable="InvokeInternalCountryService_getAllCountries_InputVariable"/>
+    <assign name="AssignXSLTInput">
+      <copy>
+        <from>concat('',$inputVariable.in/ns1:name)</from>
+        <to>$countryName</to>
+      </copy>
+      <copy>
+        <from>concat('',$inputVariable.in/ns1:code)</from>
+        <to>$countryCode</to>
+      </copy>
+      <copy>
+        <from>concat('',$inputVariable.in/ns1:continent)</from>
+        <to>$continent</to>
+      </copy>
+    </assign>
     <assign name="FilterAndTransformRawCountries">
       <bpelx:annotation>
         <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
       </bpelx:annotation>
       <copy>
-        <from>ora:doXSLTransformForDoc("../Transformations/RawCountriesToFilteredRefinedCountries.xsl", $InvokeInternalCountryService_getAllCountries_OutputVariable.reply,"countryCode",$inputVariable.in/ns1:code,"countryName",$inputVariable.in/ns1:name, "continent",$inputVariable.in/ns1:continent)</from>
+<!--       <from>ora:doXSLTransformForDoc("../Transformations/RawCountriesToFilteredRefinedCountries.xsl", $InvokeInternalCountryService_getAllCountries_OutputVariable.reply,"countryCode",$inputVariable.in/ns1:code,"countryName",$countryName, "continent",$inputVariable.in/ns1:continent)</from>
+-->
+        <from>ora:doXSLTransformForDoc("../Transformations/RawCountriesToFilteredRefinedCountries.xsl", $InvokeInternalCountryService_getAllCountries_OutputVariable.reply,"countryCode",$countryCode,"countryName",$countryName, "continent",$continent)</from>
         <to variable="outputVariable" part="return"/>
       </copy>
     </assign>

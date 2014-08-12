@@ -37,7 +37,7 @@
   <xsl:template match="/">
     <ns0:findCountriesResponseMessage>
       <ns0:Countries>
-        <xsl:for-each select="/ns0:getAllCountriesResponseMessage/ns0:Countries/ns0:Country[(($countryName= '*') or starts-with(refData:name,$countryName)) and (($countryCode= '*') or starts-with(refData:code,$countryCode)) and (($continent= '*') or refData:continent=$continent)]">
+        <xsl:for-each select="/ns0:getAllCountriesResponseMessage/ns0:Countries/ns0:Country[(($countryName= '*') or starts-with(refData:name,$countryName)) and (($countryCode= '*') or starts-with(refData:code,$countryCode)) and (($continent= '*') or ($continent= '') or refData:continent=$continent)]">
           <ns0:Country>
             <refData:code>
               <xsl:value-of select="refData:code"/>

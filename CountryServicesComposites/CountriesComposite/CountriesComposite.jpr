@@ -212,6 +212,7 @@
             <value n="custom" v="false"/>
             <value n="name" v="Default"/>
             <hash n="oracle.jdevimpl.runner.debug.DebugConfiguration">
+               <value n="promptForRemoteDebugging" v="false"/>
                <value n="remoteParameter:SOA:hostname" v="localhost"/>
                <value n="remoteParameter:SOA:port" v="5004"/>
                <value n="remoteProtocol" v="SOA"/>
